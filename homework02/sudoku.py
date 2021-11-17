@@ -28,8 +28,7 @@ def display(grid: tp.List[tp.List[str]]) -> None:
     for row in range(9):
         print(
             "".join(
-                grid[row][col].center(width) + ("|" if str(col) in "25" else "")
-                for col in range(9)
+                grid[row][col].center(width) + ("|" if str(col) in "25" else "") for col in range(9)
             )
         )
         if str(row) in "25":
@@ -46,9 +45,7 @@ def group(values: tp.List[TypeVar], number: int) -> tp.List[tp.List[TypeVar]]:
     >>> group([1,2,3,4,5,6,7,8,9], 3)
     [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
     """
-    arr = [
-        values[i * number : i * number + number] for i in range(len(values) // number)
-    ]
+    arr = [values[i * number : i * number + number] for i in range(len(values) // number)]
     return arr
 
 
@@ -115,9 +112,7 @@ def find_empty_positions(grid: tp.List[tp.List[str]]):
     return None  # no empty positions found
 
 
-def find_possible_values(
-    grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]
-) -> tp.Set[str]:
+def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.Set[str]:
     """Вернуть множество возможных значения для указанной позиции
 
     >>> grid = read_sudoku('puzzle1.txt')
