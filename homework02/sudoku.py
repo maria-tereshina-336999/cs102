@@ -3,7 +3,7 @@ import pathlib
 import random
 import typing as tp
 
-TypeVar = tp.TypeVar("T")
+T = tp.TypeVar("T")
 
 
 def read_sudoku(path: tp.Union[str, pathlib.Path]) -> tp.List[tp.List[str]]:
@@ -36,7 +36,7 @@ def display(grid: tp.List[tp.List[str]]) -> None:
     print()
 
 
-def group(values: tp.List[TypeVar], number: int) -> tp.List[tp.List[TypeVar]]:
+def group(values: tp.List[T], number: int) -> tp.List[tp.List[T]]:
     """
     Сгруппировать значения values в список, состоящий из списков по n элементов
 
@@ -135,6 +135,18 @@ def find_possible_values(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -
 
 def solve(grid: tp.List[tp.List[str]]):
     """Решение Судоку"""
+    """>>> grid = read_sudoku('puzzle1.txt')
+    >>> solve(grid)
+    [['5', '3', '4', '6', '7', '8', '9', '1', '2'],""", \
+    """['6', '7', '2', '1', '9', '5', '3', '4', '8'],""", \
+    """['1', '9', '8', '3', '4', '2', '5', '6', '7'],""", \
+    """['8', '5', '9', '7', '6', '1', '4', '2', '3'],""", \
+    """['4', '2', '6', '8', '5', '3', '7', '9', '1'],""", \
+    """['7', '1', '3', '9', '2', '4', '8', '5', '6'],""", \
+    """['9', '6', '1', '5', '3', '7', '2', '8', '4'],""", \
+    """['2', '8', '7', '4', '1', '9', '6', '3', '5'],""", \
+    """['3', '4', '5', '2', '8', '6', '1', '7', '9']]
+    """
     solver(grid)
     return grid
 
