@@ -1,3 +1,4 @@
+"""script for rsa en- and decrypting"""
 import random
 import typing as tp
 
@@ -13,7 +14,7 @@ def is_prime(n: int) -> bool:
     >>> is_prime(8)
     False
     """
-    if n == 1:
+    if n <= 1:
         return False
     if n % 2 == 0:
         return n == 2
@@ -38,11 +39,11 @@ def gcd(a: int, b: int) -> int:
 
 
 def egcd(a: int, b: int) -> tp.Tuple[int, int, int]:
+    """Расширеннный алгоритм Евклида"""
     if a == 0:
-        return (b, 0, 1)
-    else:
-        g, y, x = egcd(b % a, a)
-        return (g, x - (b // a) * y, y)
+        return b, 0, 1
+    g, y, x = egcd(b % a, a)
+    return g, x - (b // a) * y, y
 
 
 def multiplicative_inverse(e: int, phi: int) -> int:
@@ -56,21 +57,16 @@ def multiplicative_inverse(e: int, phi: int) -> int:
     g, x, y = egcd(e, phi)
     if g != 1:
         raise Exception("Inverse does not exist")
-    else:
-        return x % phi
+    return x % phi
 
 
 def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[int, int]]:
+    """Генерация пар ключей"""
     if not (is_prime(p) and is_prime(q)):
         raise ValueError("Both numbers must be prime.")
-    elif p == q:
+    if p == q:
         raise ValueError("p and q cannot be equal")
-
-    # n = pq
-    # PUT YOUR CODE HERE
     n = p * q
-    # phi = (p-1)(q-1)
-    # PUT YOUR CODE HERE
     phi = (p - 1) * (q - 1)
     # Choose an integer e such that e and phi(n) are coprime
     e = random.randrange(1, phi)
@@ -90,6 +86,7 @@ def generate_keypair(p: int, q: int) -> tp.Tuple[tp.Tuple[int, int], tp.Tuple[in
 
 
 def encrypt(pk: tp.Tuple[int, int], plaintext: str) -> tp.List[int]:
+    """encrypts message"""
     # Unpack the key into it's components
     key, n = pk
     # Convert each letter in the plaintext to numbers based on
@@ -100,6 +97,7 @@ def encrypt(pk: tp.Tuple[int, int], plaintext: str) -> tp.List[int]:
 
 
 def decrypt(pk: tp.Tuple[int, int], ciphertext: tp.List[int]) -> str:
+    """decrypts message"""
     # Unpack the key into its components
     key, n = pk
     # Generate the plaintext based on the ciphertext and key using a^b mod m
@@ -110,15 +108,15 @@ def decrypt(pk: tp.Tuple[int, int], ciphertext: tp.List[int]) -> str:
 
 if __name__ == "__main__":
     print("RSA Encrypter/ Decrypter")
-    p = int(input("Enter a prime number (17, 19, 23, etc): "))
-    q = int(input("Enter another prime number (Not one you entered above): "))
+    p_inp = int(input("Enter a prime number (17, 19, 23, etc): "))
+    q_inp = int(input("Enter another prime number (Not one you entered above): "))
     print("Generating your public/private keypairs now . . .")
-    public, private = generate_keypair(p, q)
+    public, private = generate_keypair(p_inp, q_inp)
     print("Your public key is ", public, " and your private key is ", private)
     message = input("Enter a message to encrypt with your private key: ")
     encrypted_msg = encrypt(private, message)
     print("Your encrypted message is: ")
-    print("".join(map(lambda x: str(x), encrypted_msg)))
+    print("".join(map(str, encrypted_msg)))
     print("Decrypting message with public key ", public, " . . .")
     print("Your message is:")
     print(decrypt(public, encrypted_msg))
