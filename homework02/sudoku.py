@@ -88,10 +88,7 @@ def get_block(grid: tp.List[tp.List[str]], pos: tp.Tuple[int, int]) -> tp.List[s
     """
     first_ind = pos[0] // 3 * 3
     second_ind = pos[1] // 3 * 3
-    arr = []
-    for i in range(3):
-        for j in range(3):
-            arr.append(grid[first_ind + i][second_ind + j])
+    arr = [grid[first_ind + i][second_ind + j] for i in range(3) for j in range(3)]
     return arr
 
 
