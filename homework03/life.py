@@ -1,10 +1,11 @@
+"""GameOfLife module"""
 import pathlib
 import random
 import typing as tp
-from copy import copy, deepcopy
+from copy import deepcopy
 
-import pygame
-from pygame.locals import *
+# import pygame
+# from pygame.locals import *
 
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
@@ -12,6 +13,8 @@ Grid = tp.List[Cells]
 
 
 class GameOfLife:
+    """class for GameOfLife"""
+
     def __init__(
         self,
         size: tp.Tuple[int, int],
@@ -30,33 +33,32 @@ class GameOfLife:
         self.generations = 1
 
     def create_grid(self, randomize: bool = False) -> Grid:
-        # Copy from previous assignment
+        """creates grid for game"""
         if randomize:
             return [[random.randint(0, 1) for j in range(self.cols)] for i in range(self.rows)]
         return [[0 for j in range(self.cols)] for i in range(self.rows)]
 
     def get_neighbours(self, cell: Cell) -> Cells:
-        # Copy from previous assignment
-        x1 = cell[0]
-        y1 = cell[1]
+        """returns list of neighbours for given cell"""
+        x, y = cell[0], cell[1]
         neighbours = []
-        for i in range(x1 - 1, x1 + 2):
-            for j in range(y1 - 1, y1 + 2):
+        for i in range(x - 1, x + 2):
+            for j in range(y - 1, y + 2):
                 if 0 <= i <= self.rows - 1 and 0 <= j <= self.cols - 1:
-                    if x1 != i or y1 != j:
+                    if x != i or y != j:
                         neighbours.append(self.curr_generation[i][j])
         return neighbours
 
     def get_next_generation(self) -> Grid:
-        # Copy from previous assignment
+        """returns next generation for game"""
         grid_copy = deepcopy(self.curr_generation)
-        for i in range(len(self.curr_generation)):
-            for j in range(len(self.curr_generation[0])):
+        for i, row in enumerate(self.curr_generation):
+            for j, val in enumerate(row):
                 k = (i, j)
-                l = sum(self.get_neighbours(k))
-                if l != 2 and l != 3 and self.curr_generation[i][j] == 1:
+                numb_of_neighbours = sum(self.get_neighbours(k))
+                if numb_of_neighbours != 2 and numb_of_neighbours != 3 and val == 1:
                     grid_copy[i][j] = 0
-                elif l == 3 and self.curr_generation[i][j] == 0:
+                elif numb_of_neighbours == 3 and val == 0:
                     grid_copy[i][j] = 1
         return grid_copy
 
@@ -90,8 +92,8 @@ class GameOfLife:
         """
         Прочитать состояние клеток из указанного файла.
         """
-        with open(filename, encoding="utf-8") as f:
-            grid = [[int(j) for j in i.strip()] for i in f]
+        with open(filename, encoding="utf-8") as file:
+            grid = [[int(j) for j in i.strip()] for i in file]
         life_game = GameOfLife((len(grid), len(grid[0])))
         life_game.curr_generation = grid
         return life_game
@@ -100,6 +102,6 @@ class GameOfLife:
         """
         Сохранить текущее состояние клеток в указанный файл.
         """
-        with open(filename, "w", encoding="utf-8") as f:
+        with open(filename, "w", encoding="utf-8") as file:
             for i in self.curr_generation:
-                print(*i, sep="", file=f)
+                print(*i, sep="", file=file)

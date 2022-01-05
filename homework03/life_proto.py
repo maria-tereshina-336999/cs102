@@ -1,9 +1,9 @@
+"""proto version of game"""
 import random
 import typing as tp
-from copy import copy, deepcopy
+from copy import deepcopy
 
 import pygame
-from pygame.locals import *
 
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
@@ -11,6 +11,8 @@ grid = tp.List[Cells]
 
 
 class GameOfLife:
+    """class for game of life"""
+
     def __init__(
         self, width: int = 640, height: int = 480, cell_size: int = 10, speed: int = 10
     ) -> None:
@@ -30,7 +32,7 @@ class GameOfLife:
         # Скорость протекания игры
         self.speed = speed
         # Список клеток
-        self.grid = self.create_grid()
+        self.grid = self.create_grid(True)
 
     def draw_lines(self) -> None:
         """Отрисовать сетку"""
@@ -45,21 +47,14 @@ class GameOfLife:
         clock = pygame.time.Clock()
         pygame.display.set_caption("Game of Life")
         self.screen.fill(pygame.Color("white"))
-
-        # Создание списка клеток
-        # PUT YOUR CODE HERE
-
         running = True
         while running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
+            self.grid = self.get_next_generation()
+            self.draw_grid()
             self.draw_lines()
-
-            # Отрисовка списка клеток
-            # Выполнение одного шага игры (обновление состояния ячеек)
-            # PUT YOUR CODE HERE
-
             pygame.display.flip()
             clock.tick(self.speed)
         pygame.quit()
@@ -82,13 +77,12 @@ class GameOfLife:
         out : Grid
             Матрица клеток размером `cell_height` х `cell_width`.
         """
-        grid = []
-        for i in range(self.cell_height):
-            temp = []
-            for _ in range(self.cell_width):
-                temp.append(random.randint(0, 1) if randomize else 0)
-            grid.append(temp)
-        return grid
+        if randomize:
+            return [
+                [random.randint(0, 1) for j in range(self.cell_width)]
+                for i in range(self.cell_height)
+            ]
+        return [[0 for j in range(self.cell_width)] for i in range(self.cell_height)]
 
     def draw_grid(self) -> None:
         """
@@ -142,15 +136,15 @@ class GameOfLife:
         out : Grid
             Новое поколение клеток.
         """
-        new_grid = deepcopy(self.grid)
-        for i in range(len(self.grid)):
-            for j in range(len(self.grid[0])):
+        grid_copy = deepcopy(self.grid)
+        for i, row in enumerate(self.grid):
+            for j, val in enumerate(row):
                 number_of_neighbours = sum(self.get_neighbours((i, j)))
-                if number_of_neighbours != 2 and number_of_neighbours != 3 and self.grid[i][j] == 1:
-                    new_grid[i][j] = 0
-                elif number_of_neighbours == 3 and self.grid[i][j] == 0:
-                    new_grid[i][j] = 1
-        return new_grid
+                if number_of_neighbours != 2 and number_of_neighbours != 3 and val == 1:
+                    grid_copy[i][j] = 0
+                elif number_of_neighbours == 3 and val == 0:
+                    grid_copy[i][j] = 1
+        return grid_copy
 
 
 if __name__ == "__main__":

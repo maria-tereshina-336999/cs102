@@ -1,24 +1,28 @@
+"""GUI version of game"""
 import pygame
 from life import GameOfLife
-from pygame.locals import *
 from ui import UI
 
 
 class GUI(UI):
-    def __init__(self, life: GameOfLife, cell_size: int = 20, speed: int = 10) -> None:
-        super().__init__(life)
+    """отрисовка и запуск игры"""
+
+    def __init__(self, game_life: GameOfLife, cell_size: int = 20, speed: int = 10) -> None:
+        super().__init__(game_life)
         self.cell_size = cell_size
         self.speed = speed
         self.height, self.width = (self.life.rows * self.cell_size, self.life.cols * self.cell_size)
         self.screen = pygame.display.set_mode((self.height, self.width))
 
     def draw_lines(self) -> None:
+        """Отобразить сетку"""
         for x in range(0, self.width, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color("black"), (0, x), (self.height, x))
         for y in range(0, self.height, self.cell_size):
             pygame.draw.line(self.screen, pygame.Color("black"), (y, 0), (y, self.width))
 
     def draw_grid(self) -> None:
+        """Отобразить состояние клеток."""
         y = 0
         for row in self.life.curr_generation:
             x = 0
@@ -29,6 +33,7 @@ class GUI(UI):
             y += self.cell_size
 
     def run(self) -> None:
+        """запускаем игру"""
         pygame.init()
         clock = pygame.time.Clock()
         pygame.display.set_caption("Game of Life")
