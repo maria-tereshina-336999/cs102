@@ -5,7 +5,7 @@ from ui import UI
 
 
 class GUI(UI):
-    def __init__(self, life: GameOfLife, cell_size: int = 10, speed: int = 10) -> None:
+    def __init__(self, life: GameOfLife, cell_size: int = 20, speed: int = 10) -> None:
         super().__init__(life)
         self.cell_size = cell_size
         self.speed = speed
@@ -36,7 +36,7 @@ class GUI(UI):
         running = True
         while running:
             for event in pygame.event.get():
-                if event.type == QUIT:
+                if event.type == pygame.QUIT:
                     running = False
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
@@ -68,6 +68,6 @@ class GUI(UI):
 
 
 if __name__ == "__main__":
-    life = GameOfLife((20, 20))
+    life = GameOfLife((30, 30))
     gui = GUI(life)
     gui.run()
