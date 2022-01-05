@@ -7,7 +7,7 @@ from pygame.locals import *
 
 Cell = tp.Tuple[int, int]
 Cells = tp.List[int]
-Grid = tp.List[Cells]
+grid = tp.List[Cells]
 
 
 class GameOfLife:
@@ -29,6 +29,8 @@ class GameOfLife:
 
         # Скорость протекания игры
         self.speed = speed
+        # Список клеток
+        self.grid = self.create_grid()
 
     def draw_lines(self) -> None:
         """Отрисовать сетку"""
@@ -62,7 +64,7 @@ class GameOfLife:
             clock.tick(self.speed)
         pygame.quit()
 
-    def create_grid(self, randomize: bool = False) -> Grid:
+    def create_grid(self, randomize: bool = False) -> grid:
         """
         Создание списка клеток.
 
@@ -131,7 +133,7 @@ class GameOfLife:
                     neighbours.append(self.grid[i][j])
         return neighbours
 
-    def get_next_generation(self) -> Grid:
+    def get_next_generation(self) -> grid:
         """
         Получить следующее поколение клеток.
 
@@ -149,3 +151,8 @@ class GameOfLife:
                 elif number_of_neighbours == 3 and self.grid[i][j] == 0:
                     new_grid[i][j] = 1
         return new_grid
+
+
+if __name__ == "__main__":
+    game = GameOfLife(320, 240, 20)
+    game.run()

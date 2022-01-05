@@ -31,16 +31,9 @@ class GameOfLife:
 
     def create_grid(self, randomize: bool = False) -> Grid:
         # Copy from previous assignment
-        grid = []
-        for i in range(self.rows):
-            grid.append([])
-            for _ in range(self.cols):
-                if randomize == True:
-                    val = random.randint(0, 1)
-                else:
-                    val = 0
-                grid[i].append(val)
-        return grid
+        if randomize:
+            return [[random.randint(0, 1) for j in range(self.cols)] for i in range(self.rows)]
+        return [[0 for j in range(self.cols)] for i in range(self.rows)]
 
     def get_neighbours(self, cell: Cell) -> Cells:
         # Copy from previous assignment
