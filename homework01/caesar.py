@@ -15,7 +15,15 @@ def encrypt_caesar(plaintext: str, shift: int = 3) -> str:
     ''
     """
     ciphertext = ""
-    # PUT YOUR CODE HERE
+    alpha_s = [chr(x) for x in range(ord("a"), ord("z") + 1)]
+    alpha_c = [chr(x) for x in range(ord("A"), ord("Z") + 1)]
+    for symb in plaintext:
+        if symb in alpha_s:
+            ciphertext += alpha_s[(alpha_s.index(symb) + shift) % len(alpha_s)]
+        elif symb in alpha_c:
+            ciphertext += alpha_c[(alpha_c.index(symb) + shift) % len(alpha_c)]
+        else:
+            ciphertext += symb
     return ciphertext
 
 
@@ -33,7 +41,15 @@ def decrypt_caesar(ciphertext: str, shift: int = 3) -> str:
     ''
     """
     plaintext = ""
-    # PUT YOUR CODE HERE
+    alpha_s = [chr(x) for x in range(ord("a"), ord("z") + 1)]
+    alpha_c = [chr(x) for x in range(ord("A"), ord("Z") + 1)]
+    for symb in ciphertext:
+        if symb in alpha_s:
+            plaintext += alpha_s[(alpha_s.index(symb) - shift) % len(alpha_s)]
+        elif symb in alpha_c:
+            plaintext += alpha_c[(alpha_c.index(symb) - shift) % len(alpha_c)]
+        else:
+            plaintext += symb
     return plaintext
 
 
