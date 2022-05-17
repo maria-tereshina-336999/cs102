@@ -6,14 +6,13 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.12/semantic.min.js"></script>
     </head>
     <body>
-    <h2><center>Hacker News</center></h2>
+    <h2><center>Предсказанное ранжирование новостей</center></h2>
         <div class="ui container" style="padding-top: 10px;">
         <table class="ui celled table">
             <thead class="full-width">
                 <tr>
                     <th colspan="7">
-                        <a href="/classify" class="ui  floated small primary button">Получить прогнозы</a>
-                        <a href="/update" class="ui right floated small primary button">Больше Hacker News!</a>
+                        <a href="/news" class="ui  floated small primary button">На главную страницу</a>
                     </th>
                 </tr>
             </thead>
@@ -31,9 +30,15 @@
                     <td>{{ row.author }}</td>
                     <td>{{ row.points }}</td>
                     <td>{{ row.comments }}</td>
-                    <td class="positive"><a href="/add_label/?label=good&id={{ row.id }}">Интересно</a></td>
-                    <td class="active"><a href="/add_label/?label=maybe&id={{ row.id }}">Возможно прочитаю</a></td>
-                    <td class="negative"><a href="/add_label/?label=never&id={{ row.id }}">Не интересно</a></td>
+                    % if row.label == "good":
+                        <td class="positive">Интересно</td>
+                    % elif row.label == "maybe":
+                        <td class="active">Возможно прочитаю</td>
+                    % elif row.label == "never":
+                        <td class="negative">Не интересно</td>
+                    % else:
+                        <td>{{row.label}}</td>
+                    % end
                 </tr>
                 %end
             </tbody>
